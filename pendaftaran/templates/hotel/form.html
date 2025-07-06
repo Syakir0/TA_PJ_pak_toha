@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}{{ judul }}{% endblock %}
+{% block content %}
+<style>
+    .form-container {
+        max-width: 500px;
+        margin: 50px auto;
+        background: linear-gradient(135deg, #f5f5f5, #fffbea);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        animation: fadeIn 0.5s ease;
+    }
+
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #3e3e3e;
+    }
+
+    .form-container input,
+    .form-container select,
+    .form-container button {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+
+    .form-container button {
+        background-color: #8b7b5a;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .form-container button:hover {
+        background-color: #a59273;
+    }
+
+    .back-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #e8dfcf;
+    color: #3e3e3e;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+.back-link:hover {
+    background-color: #d6c8b1;
+    color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<div class="form-container">
+    <h2>{{ judul }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Simpan</button>
+    </form>
+    <div class="back-container">
+    <a href="/hotel/" class="back-link">← Kembali ke Daftar Hotel</a>
+</div>
+
+</div>
+{% endblock %}

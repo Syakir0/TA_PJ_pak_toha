@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load humanize %}
+{% block title %}Daftar Hotel{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to bottom, #fdfcfb, #e6dfd3);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        background-color: #fffdf6;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        animation: fadeInUp 0.8s ease-in-out;
+    }
+
+    h2 {
+        text-align: center;
+        color: #4a403a;
+        margin-bottom: 25px;
+    }
+
+    form input, form button {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    form button {
+        background-color: #c0a98e;
+        color: #fff;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+        background-color: #ab9075;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        animation: fadeIn 1s ease;
+    }
+
+    th, td {
+        padding: 12px;
+        border: 1px solid #e2dcd4;
+        text-align: center;
+    }
+
+    thead {
+        background-color: #f0eae2;
+        color: #4a403a;
+    }
+
+    a {
+        color: #806c5a;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    .btn-tambah {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #8b7b5a;
+        color: white;
+        border-radius: 10px;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        transition: background-color 0.2s ease;
+        margin-bottom: 15px;
+    }
+
+    .btn-tambah:hover {
+        background-color: #6f6048;
+    }
+
+    .pagination {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .pagination a {
+        margin: 0 5px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        background-color: #f5f0e8;
+        color: #4a403a;
+        font-weight: bold;
+        text-decoration: none;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .pagination span {
+        font-weight: bold;
+        color: #4a403a;
+        margin: 0 10px;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0px);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2>Data Hotel</h2>
+
+    <form method="get" style="display: flex; gap: 10px; margin-bottom: 20px;">
+        <input name="q" placeholder="Cari Nama" value="{{ q }}" style="flex: 1;">
+        <button>Cari</button>
+    </form>
+
+    <a href="{% url 'tambah' %}" class="btn-tambah">➕ Tambah Data</a>
+
+    <table>
+        <thead>
+            <tr>
+                {% for col, label in columns %}
+                <th>
+                    <a href="?sort={{ col }}{% if q %}&q={{ q }}{% endif %}">
+                        {{ label }}
+                        {% if sort == col %}↑{% elif sort == '-'|add:col %}↓{% endif %}
+                    </a>
+                </th>
+                {% endfor %}
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for h in hotels %}
+            <tr>
+                <td>{{ h.nama }}</td>
+                <td>{{ h.kamar }}</td>
+                <td>Rp {{ h.harga|intcomma }}</td>
+                <td>{{ h.lama_inap }}</td>
+                <td>
+                    <a href="{% url 'edit' h.id %}">Edit</a> |
+                    <a href="{% url 'hapus' h.id %}" onclick="return confirm('Yakin ingin menghapus data ini?')" style="color: #b83c3c;">Hapus</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5">Tidak ada data ditemukan.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">⏮ Awal</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">← Sebelumnya</a>
+        {% endif %}
+
+        <span>Halaman {{ page_obj.number }} dari {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">Selanjutnya →</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if q %}&q={{ q }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">Akhir ⏭</a>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

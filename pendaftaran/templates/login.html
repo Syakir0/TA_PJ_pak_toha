@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background: linear-gradient(135deg, #fdfdfd, #f7f1e3, #eaeaea);
+        background-size: 400% 400%;
+        animation: gradientFlow 10s ease infinite;
+        font-family: 'Segoe UI', sans-serif;
+        overflow: hidden;
+        position: relative;
+    }
+
+    @keyframes gradientFlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .coin {
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background: radial-gradient(circle at 30% 30%, gold, goldenrod);
+        border-radius: 50%;
+        opacity: 0.9;
+        animation: coinFall 7s linear infinite;
+        z-index: 0;
+    }
+
+    .coin:nth-child(1) { left: 10%; animation-delay: 0s; }
+    .coin:nth-child(2) { left: 25%; animation-delay: 2s; }
+    .coin:nth-child(3) { left: 50%; animation-delay: 1s; }
+    .coin:nth-child(4) { left: 70%; animation-delay: 3s; }
+    .coin:nth-child(5) { left: 90%; animation-delay: 0.5s; }
+    .coin:nth-child(6) { left: 40%; animation-delay: 4s; }
+    .coin:nth-child(7) { left: 80%; animation-delay: 1.5s; }
+
+    @keyframes coinFall {
+        0% { top: -50px; transform: rotate(0deg); }
+        100% { top: 110vh; transform: rotate(360deg); }
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1;
+        backdrop-filter: blur(10px);
+        animation: fadeInUp 1s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .login-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .login-container input {
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        background: #fff;
+        transition: 0.3s ease;
+    }
+
+    .login-container input:focus {
+        border-color: #b89e74;
+        box-shadow: 0 0 8px #d1bfa1;
+        outline: none;
+    }
+
+    .login-container button {
+        padding: 12px;
+        background-color: #b89e74;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .login-container button:hover {
+        background-color: #a3865e;
+    }
+
+    .error-message {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 500px) {
+        .login-container {
+            margin: 0 15px;
+            padding: 20px;
+        }
+    }
+</style>
+
+<!-- Koin jatuh -->
+<div class="coin"></div>
+<div class="coin"></div>
+<div class="coin"></div>
+<div class="coin"></div>
+<div class="coin"></div>
+<div class="coin"></div>
+<div class="coin"></div>
+
+<!-- Container Login -->
+<div class="login-container">
+    <h2>Login Admin</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+    </form>
+
+    {% if error %}
+    <p class="error-message">{{ error }}</p>
+    {% endif %}
+</div>
+{% endblock %}

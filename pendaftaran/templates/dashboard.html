@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="falling-container">
+    <div class="stars"></div>
+    <div class="coins"></div>
+
+    <div class="dashboard-card">
+        <h2 class="dashboard-title">Selamat Datang, {{ user.username|capfirst }}!</h2>
+        <p class="dashboard-desc">Ini adalah dashboard admin. Silakan gunakan menu di atas untuk mengelola data hotel dan informasi lainnya.</p>
+
+        <div class="dashboard-buttons">
+            <a href="/hotel/" class="btn">🛏 Daftar Hotel</a>
+            <a href="/tentang/" class="btn">ℹ️ Tentang Kami</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background: linear-gradient(to bottom, #fdfbf8, #f5f1eb);
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .falling-container {
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        padding: 40px 20px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard-card {
+        background: #fffdf9;
+        max-width: 600px;
+        width: 100%;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        z-index: 2;
+        animation: fadeIn 0.8s ease;
+    }
+
+    .dashboard-title {
+        font-size: 26px;
+        color: #5a4b3d;
+        margin-bottom: 12px;
+    }
+
+    .dashboard-desc {
+        color: #6b6b6b;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .btn {
+        background-color: #d6c6aa;
+        color: #3e3e3e;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        min-width: 140px;
+        text-align: center;
+    }
+
+    .btn:hover {
+        background-color: #c7b18c;
+        color: #222;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-title {
+            font-size: 22px;
+        }
+
+        .dashboard-buttons {
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+
+    .stars::before,
+    .coins::before {
+        content: "";
+        position: absolute;
+        top: -10%;
+        width: 18px;
+        height: 18px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        animation: fall 10s linear infinite;
+        opacity: 0.8;
+    }
+
+    .stars::before {
+        left: 25%;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/616/616408.png');
+        animation-delay: 0s;
+    }
+
+    .coins::before {
+        left: 65%;
+        background-image: url('https://cdn-icons-png.flaticon.com/512/263/263142.png');
+        animation-delay: 2s;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+</style>
+{% endblock %}

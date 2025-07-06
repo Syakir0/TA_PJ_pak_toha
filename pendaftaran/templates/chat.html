@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Live Chat{% endblock %}
+{% block content %}
+<h2>Live Chat</h2>
+<div id="chat-box" style="border:1px solid #ccc; height:300px; overflow-y:scroll;"></div>
+<input id="chat-message" type="text" placeholder="Ketik pesan..." autofocus>
+<button onclick="sendMessage()">Kirim</button>
+
+<script>
+    const chatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        const box = document.getElementById('chat-box');
+        box.innerHTML += `<div>${data.message}</div>`;
+        box.scrollTop = box.scrollHeight;
+    };
+
+    function sendMessage() {
+        const input = document.getElementById('chat-message');
+        const message = input.value;
+        if (message.trim() !== '') {
+            chatSocket.send(JSON.stringify({'message': message}));
+            input.value = '';
+        }
+    }
+</script>
+{% endblock %}
